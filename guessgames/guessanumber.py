@@ -5,8 +5,14 @@
 
 .. moduleauthor:: FullName <email>
 """
-class GuessANumber:
+
+from guessgames.guessgame import GuessGame
+
+
+class GuessANumber(GuessGame):
+    "Guess a word game class."
     def __init__(self, number_to_guess, turns=10):
+        super().__init__("Guess a Number")
         self.__number_to_guess = number_to_guess
         self.__turns = turns
     
@@ -50,7 +56,7 @@ class GuessANumber:
         elif guess > self.number_to_guess:
             self._print("Your guess is too high")
         else:
-            self._print("You guessed it!")
+            self._print("You guessed it {}!".format(self.username))
             return True
         self.turns -= 1
 
@@ -60,17 +66,18 @@ class GuessANumber:
             if self.game_logic(guess):
                 break
         else:
-            self._print("Tries number exceeded, sorry!")
+            self._print("Tries number exceeded, sorry {}!".format(self.username))
 
     def play(self):
         self.play_game()
         self._print("Game over")
 
 
-def main():
-    game = GuessANumber(50)
+def main(number, turns):
+    game = GuessANumber(number, turns)
     game.play()
 
 
 if __name__ == '__main__':
-    main()
+    from random import randint
+    main(randint(0,100))

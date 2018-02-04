@@ -5,10 +5,10 @@ from .guessanumber import main as guess_a_number_game
 from .guessaword import main as guess_a_word_game
 
 def game_number(args):
-    guess_a_number_game()
+    guess_a_number_game(args.number, args.tries)
 
 def game_word(args):
-    guess_a_word_game()
+    guess_a_word_game(args.word, args.tries)
 
 
 def parse_args():
@@ -27,12 +27,17 @@ def parse_args():
     word_p.add_argument('--tries', type=int, help='number of tries', default=10)
     word_p.set_defaults(func=game_word)
 
-    return parser.parse_args()
+    parsed_args = parser.parse_args()
+    
+    if hasattr(parsed_args, 'func'):
+        parsed_args.func(parsed_args)
+    else:
+        parser.print_help()
 
 
 def main():
-    args = parse_args()
-    args.func(args)
+    parse_args()
+    
 
 if __name__=='__main__':
     main()

@@ -1,11 +1,12 @@
+from guessgames.guessgame import GuessGame
 
-class GuessAWordGame:
+class GuessAWordGame(GuessGame):
     "Guess a word game class."
-    def __init__(self, word, tries=10, name='John Doe'):
+    def __init__(self, word, tries=10):
+        super().__init__("Guess a Word")
         self.word = word.upper()
         self.tries = tries
         self.guesses = []
-        self.name = name
 
     def generate_word_to_display(self):
         return ''.join(char.upper() if char in self.guesses else '*' for char in self.word)
@@ -22,7 +23,7 @@ class GuessAWordGame:
                 return True
         else:
             self.tries -= 1
-            print("Wrong! You have {} tries left, {} ...".format(self.tries, self.name))
+            print("Wrong! You have {} tries left, {} ...".format(self.tries, self.username))
 
     def play(self):
         while self.tries > 0:
@@ -31,21 +32,15 @@ class GuessAWordGame:
             guess = guess.upper()
             if self.game_logic(guess):
                 self.display_word()
-                print("Congratulations {}!".format(self.name))
+                print("Congratulations {}!".format(self.username))
                 break
         else:
             print("Tries number exceeded, sorry!")
         print("Game over")
 
-def get_user_name(gamename):
-    username = input("What is your name? ")
-    print("Hello {}, time to play {} game!".format(gamename, username))
-    return username
-
-def main():
-    name = get_user_name('Guess a Word')
-    game = GuessAWordGame('secret', name=name)
+def main(word, turns):
+    game = GuessAWordGame(word, turns)
     game.play()
 
 if __name__ == '__main__':
-    main()
+    main('secret', 10)
