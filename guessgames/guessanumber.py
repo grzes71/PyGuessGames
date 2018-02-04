@@ -9,6 +9,19 @@
 from guessgames.guessgame import GuessGame
 
 
+class InputManager:
+    def __init__(self, message):
+        self.message = message
+    def __enter__(self):
+        while True:
+            try:
+                return int(input(self.message))
+            except ValueError:
+                print('This is not a numeric value, try again!')
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+
 class GuessANumber(GuessGame):
     "Guess a word game class."
     def __init__(self, number_to_guess, turns=10):
@@ -32,11 +45,8 @@ class GuessANumber(GuessGame):
         print(message)
 
     def get_user_input(self):
-        while True:
-            try:
-                return int(input("Enter an integer from 1 to 99: "))
-            except ValueError:
-                self._print('This is not a numeric value, try again!')
+        with InputManager("Enter an integer from 1 to 99: ") as value:
+                return value
 
     def game_logic(self, guess):
         """Implements the game logic.
