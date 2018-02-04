@@ -80,4 +80,4 @@ def main(number, turns):
 
 if __name__ == '__main__':
     from random import randint
-    main(randint(0,100))
+    main(randint(0,100), 10)
