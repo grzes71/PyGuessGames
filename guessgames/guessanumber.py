@@ -17,36 +17,42 @@ class GuessANumber:
     def turns(self, value):
         self.__turns = value
 
+    def _print(self, message):
+        print(message)
+
     def get_user_input(self):
         while True:
             try:
                 return int(input("Enter an integer from 1 to 99: "))
             except ValueError:
-                print('This is not a numeric value, try again!')
+                self._print('This is not a numeric value, try again!')
 
-    def self.game_logic(self, guess):
-        if guess < number_to_guess:
-            print("Your guess is too low")
-        elif guess > number_to_guess:
-            print("Your guess is too high")
+    def game_logic(self, guess):
+        if guess < self.number_to_guess:
+            self._print("Your guess is too low")
+        elif guess > self.number_to_guess:
+            self._print("Your guess is too high")
         else:
-            print("You guessed it!")
+            self._print("You guessed it!")
             return True
         self.turns -= 1
 
-    def play(self):
-        number_to_guess = 50
+    def play_game(self):
         while self.turns:
             guess = self.get_user_input()
             if self.game_logic(guess):
                 break
         else:
-            print("Tries number exceeded, sorry!")
-        print("Game over")
+            self._print("Tries number exceeded, sorry!")
+
+    def play(self):
+        self.play_game()
+        self._print("Game over")
 
 
 def main():
-    guess_a_number()
+    game = GuessANumber(50)
+    game.play()
 
 
 if __name__ == '__main__':
