@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from unittest import TestCase
 
-from guessgame.guessanumber import GuessANumber
+from guessgames.guessanumber import GuessANumber
 
 class TestGuessaNumber(TestCase):
 
@@ -39,33 +39,12 @@ class TestGuessaNumber(TestCase):
 
     def test_play_game_loop_success(self):
         with patch('builtins.input', return_value=50):
-            with patch.object(self.game, 'game_logic') as mock:
-                with patch.object(self.game, '_print') as mock_print:
-                    self.game.play_game()
-                    mock.assert_called_with(50)
-                    mock_print.assert_called_with("Game over")
-                    self.assertEqual(self.game.turns, 10)
+            with patch.object(self.game, 'game_logic') as mock_game:
+                self.game.play_game()
+                mock_game.assert_called_with(50)
 
     def test_play_game_loop_failure(self):
         with patch('builtins.input', return_value=0):
-            with patch.object(self.game, 'game_logic') as mock:
-                with patch.object(self.game, '_print') as mock_print:
-                    self.game.play_game()
-                    mock.assert_called_with(0)
-                    mock_print.assert_called_with("Game over")
-                    self.assertEqual(self.game.turns, 10)
-
-    # def test_game_logic(self):
-    #     with patch('builtins.input', return_value=10):
-    #         with patch.object(self.game, '_print') as mock:
-    #             guess = self.game.game_logic(50)
-    #             mock.assert_called_with("Your guess is too low")
-
-    # get_input will return 'yes' during this test
-    # @patch('guessgame.guessanumber.get_user_input', return_value='1')
-    # def test_get_user_input_1(self, input):
-    #     self.assertEqual(answer(), 'you entered 1')
-
-    # @patch('yourmodule.get_input', return_value='no')
-    # def test_answer_no(self, input):
-    #     self.assertEqual(answer(), 'you entered no')
+            with patch.object(self.game, 'game_logic') as mock_game:
+                self.game.play_game()
+                mock_game.assert_called_with(0)

@@ -1,5 +1,10 @@
-"Guess a Number simple game."
+"""
+.. module:: guessgames.guessanumber
+:platform: Unix, Windows
+:synopsis: Guess a Number simple game.
 
+.. moduleauthor:: FullName <email>
+"""
 class GuessANumber:
     def __init__(self, number_to_guess, turns=10):
         self.__number_to_guess = number_to_guess
@@ -28,6 +33,18 @@ class GuessANumber:
                 self._print('This is not a numeric value, try again!')
 
     def game_logic(self, guess):
+        """Implements the game logic.
+
+        Displays an appropriate message if the 
+        guessed number is lower, higher or 
+        exactly the number to guess - 
+        returns True in this case, 
+        otherwise decreases number of turns.
+
+        :param guess: number provided by player.
+        :type guess: int
+        :return: True if number is correct.
+        """
         if guess < self.number_to_guess:
             self._print("Your guess is too low")
         elif guess > self.number_to_guess:
