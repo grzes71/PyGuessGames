@@ -6,8 +6,22 @@
 .. moduleauthor:: FullName <email>
 """
 
+from contextlib import contextmanager
 from guessgames.guessgame import GuessGame
 
+
+@contextmanager
+def input_integer(message):
+    while True:
+        try:
+            value = int(input(message))
+            break
+        except ValueError:
+            print('This is not a numeric value, try again!')
+    try:
+        yield value
+    finally:
+        pass
 
 class InputManager:
     def __init__(self, message):
@@ -68,7 +82,7 @@ class GuessANumber(GuessGame):
 
     def play_game(self):
         while self.turns:
-            with InputManager("Enter an integer from 1 to 99: ") as guess:
+            with input_integer("Enter an integer from 1 to 99: ") as guess:  # InputManager("Enter an integer from 1 to 99: ")
                 if self.game_logic(guess):
                     break
         else:
