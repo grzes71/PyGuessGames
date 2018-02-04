@@ -44,10 +44,6 @@ class GuessANumber(GuessGame):
     def _print(self, message):
         print(message)
 
-    def get_user_input(self):
-        with InputManager("Enter an integer from 1 to 99: ") as value:
-                return value
-
     def game_logic(self, guess):
         """Implements the game logic.
 
@@ -72,9 +68,9 @@ class GuessANumber(GuessGame):
 
     def play_game(self):
         while self.turns:
-            guess = self.get_user_input()
-            if self.game_logic(guess):
-                break
+            with InputManager("Enter an integer from 1 to 99: ") as guess:
+                if self.game_logic(guess):
+                    break
         else:
             self._print("Tries number exceeded, sorry {}!".format(self.username))
 
