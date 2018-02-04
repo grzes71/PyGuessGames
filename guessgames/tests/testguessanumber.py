@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from unittest import TestCase
+from unittest import TestCase, main
 
 from guessgames.guessanumber import GuessANumber
 
@@ -48,3 +48,7 @@ class TestGuessaNumber(TestCase):
             with patch.object(self.game, 'game_logic') as mock_game:
                 self.game.play_game()
                 mock_game.assert_called_with(0)
+
+
+if __name__ == '__main__':
+    main()
