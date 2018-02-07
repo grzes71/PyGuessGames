@@ -6,7 +6,7 @@ from guessgames.guessanumber import GuessANumber
 class TestGuessaNumber(TestCase):
 
     def setUp(self):
-        self.game = GuessANumber(50, turns=10)
+        self.game = GuessANumber(50, 10)
 
     def test_get_user_input(self):
         with patch('builtins.input', return_value=10):

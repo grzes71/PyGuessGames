@@ -1,6 +1,6 @@
 from guessgames.guessgame import GuessGame
 
-class GuessAWordGame(GuessGame):
+class GuessAWord(GuessGame):
     "Guess a word game class."
     def __init__(self, word, tries=10):
         super().__init__("Guess a Word")
@@ -39,7 +39,7 @@ class GuessAWordGame(GuessGame):
         print("Game over")
 
 def main(word, turns):
-    game = GuessAWordGame(word, turns)
+    game = GuessAWord(word, turns)
     game.play()
 
 if __name__ == '__main__':
