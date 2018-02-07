@@ -6,11 +6,31 @@ from guessgames.guessanumber import GuessANumber
 class TestGuessaNumber(TestCase):
 
     def setUp(self):
-        self.game = GuessANumber(50, turns=10)
+        self.game = GuessANumber(50, 10)
 
-    def test_get_user_input(self):
+    def test_getturns(self):
+        self.assertEqual(self.game.turns, 10)
+
+    def test_setturns(self):
+        self.game.turns -= 1
+        self.assertEqual(self.game.turns, 9)
+
+    def test_number_to_guess(self):
+        self.assertEqual(self.game.number_to_guess, 50)
+
+    def test_getgamename(self):
+        self.assertEqual(self.game.gamename, 'Guess A Number')
+
+    def test_getusername(self):
+        self.assertEqual(self.game.username, 'Unknown')
+
+    def test_setusername(self):
+        self.game.username = 'greg'
+        self.assertEqual(self.game.username, 'Greg')
+
+    def test_get_user_int(self):
         with patch('builtins.input', return_value=10):
-            guess = self.game.get_user_input()
+            guess = self.game.get_user_int("Enter an integer from 1 to 99: ")
             self.assertEqual(guess, 10)
 
     def test_game_logic_too_low(self):
@@ -30,24 +50,35 @@ class TestGuessaNumber(TestCase):
                 self.assertEqual(self.game.turns, 9)
 
     def test_game_logic_success(self):
+        self.game.username = 'greg'
         with patch('builtins.input', return_value=50):
             with patch.object(self.game, '_print') as mock:
                 guess = self.game.game_logic(50)
                 self.assertTrue(guess)
-                mock.assert_called_with("You guessed it!")
+                mock.assert_called_with("You guessed it Greg!")
                 self.assertEqual(self.game.turns, 10)
 
     def test_play_game_loop_success(self):
-        with patch('builtins.input', return_value=50):
-            with patch.object(self.game, 'game_logic') as mock_game:
-                self.game.play_game()
-                mock_game.assert_called_with(50)
+        with patch.object(self.game, 'get_user_int', return_value=50):
+            self.game.game_loop()
+            self.assertEqual(self.game.turns, 10)
 
     def test_play_game_loop_failure(self):
-        with patch('builtins.input', return_value=0):
-            with patch.object(self.game, 'game_logic') as mock_game:
-                self.game.play_game()
-                mock_game.assert_called_with(0)
+        with patch.object(self.game, 'get_user_int', return_value=0):
+            self.game.game_loop()
+            self.assertEqual(self.game.turns, 0)
+
+    def test_play_failure(self):
+        with patch.object(self.game, '_input_name', return_value='steve'):
+            with patch.object(self.game, 'get_user_int', return_value=0):
+                self.game.play()
+                self.assertEqual(self.game.turns, 0)
+
+    def test_play_success(self):
+        with patch.object(self.game, '_input_name', return_value='steve'):
+            with patch.object(self.game, 'get_user_int', return_value=50):
+                self.game.play()
+                self.assertEqual(self.game.turns, 10)
 
 
 if __name__ == '__main__':
