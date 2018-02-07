@@ -10,53 +10,37 @@ from contextlib import contextmanager
 from guessgames.guessgame import GuessGame
 
 
-@contextmanager
-def input_integer(message):
-    while True:
-        try:
-            value = int(input(message))
-            break
-        except ValueError:
-            print('This is not a numeric value, try again!')
-    try:
-        yield value
-    finally:
-        pass
-
-class InputManager:
-    def __init__(self, message):
-        self.message = message
-    def __enter__(self):
-        while True:
-            try:
-                return int(input(self.message))
-            except ValueError:
-                print('This is not a numeric value, try again!')
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
-
-
 class GuessANumber(GuessGame):
-    "Guess a word game class."
+    "Guess a Number game class."
     def __init__(self, number_to_guess, turns=10):
+        "Initialize the game."
         super().__init__("Guess a Number")
         self.__number_to_guess = number_to_guess
         self.__turns = turns
     
     @property
     def number_to_guess(self):
+        "Get number to guess."
         return self.__number_to_guess
 
     @property
     def turns(self):
+        "Get number of turns"
         return self.__turns
 
     @turns.setter
     def turns(self, value):
         self.__turns = value
 
-    def _print(self, message):
-        print(message)
+    def input_int(self, message, error_msg='This is not a numeric value, try again!'):
+        while True:
+            try:
+                yield int(input(message))
+            except ValueError:
+                print(error_msg)
+
+    def get_user_int(self, message):
+        return next(self.input_int(message)) 
 
     def game_logic(self, guess):
         """Implements the game logic.
@@ -80,16 +64,19 @@ class GuessANumber(GuessGame):
             return True
         self.turns -= 1
 
-    def play_game(self):
+    def game_loop(self):
+        "Main game loop."
         while self.turns:
-            with input_integer("Enter an integer from 1 to 99: ") as guess:  # InputManager("Enter an integer from 1 to 99: ")
-                if self.game_logic(guess):
-                    break
+            guess = self.get_user_int("Enter an integer from 1 to 99: ")
+            if self.game_logic(guess):
+                break
         else:
             self._print("Tries number exceeded, sorry {}!".format(self.username))
 
     def play(self):
-        self.play_game()
+        "Play the game."
+        self.set_user_name()
+        self.game_loop()
         self._print("Game over")
 
 

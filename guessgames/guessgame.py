@@ -1,30 +1,50 @@
 class GuessGame:
     "Abstract Game base class."
+    DEFAULT_WELCOME_MSG = "Hello {}, time to play {} game!"
 
-    def __init__(self, name):
+    def __init__(self, name, username="Unknown"):
         self.gamename = name
-        self.username = self.get_user_name()
-        self.hello()
+        self.username = username
 
     def hello(self):
-        print("Hello {}, time to play {} game!".format(self.username, self.gamename))
+        "Print game welcome message"
+        print(self.__class__.DEFAULT_WELCOME_MSG.format(self.username, self.gamename))
+
+    @staticmethod
+    def _input(message):
+        "Generic input method."
+        return input(message)
+
+    @staticmethod
+    def _print(message):
+        print(message)
 
     @property
     def username(self):
+        "Get user name."
         return self._username
     
     @property
     def gamename(self):
+        "Get game name."
         return self._gamename 
 
     @gamename.setter
     def gamename(self, value):
+        "Set game name."
         self._gamename = value.title()
 
     @username.setter
     def username(self, value):
+        "Set user name."
         self._username = value.capitalize()
 
-    def get_user_name(self):
-        username = input("What is your name? ")
-        return username
+    def _input_name(self):
+        "Method for getting user name."
+        return self._input("What is your name? ")
+
+    def set_user_name(self):
+        self.username = self._input_name()
+
+    def play(self):
+        return NotImplemented
