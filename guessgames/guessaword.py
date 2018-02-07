@@ -47,13 +47,13 @@ class GuessAWord(GuessGame):
                 self._print('The word is "{}", congratulations {}'.format(self.word_to_guess, self.username))
                 return True
         else:
-            print('Sorry!')
+            self._print('Sorry!')
 
     def game_loop(self):
         guessed_chars = set()
         while self.turns:
             self.print_chars(guessed_chars)
-            user_char = input("Enter character: ").upper()
+            user_char = self._input("Enter character: ").upper()
             if self.game_logic(user_char, guessed_chars):
                 break
             self.turns -= 1
