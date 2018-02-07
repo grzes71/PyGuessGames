@@ -8,14 +8,25 @@ class TestGuessaNumber(TestCase):
     def setUp(self):
         self.game = GuessANumber(50, 10)
 
-    def test_turns(self):
+    def test_getturns(self):
         self.assertEqual(self.game.turns, 10)
+
+    def test_setturns(self):
+        self.game.turns -= 1
+        self.assertEqual(self.game.turns, 9)
 
     def test_number_to_guess(self):
         self.assertEqual(self.game.number_to_guess, 50)
 
-    def test_gamename(self):
+    def test_getgamename(self):
         self.assertEqual(self.game.gamename, 'Guess A Number')
+
+    def test_getusername(self):
+        self.assertEqual(self.game.username, 'Unknown')
+
+    def test_setusername(self):
+        self.game.username = 'greg'
+        self.assertEqual(self.game.username, 'Greg')
 
     def test_get_user_int(self):
         with patch('builtins.input', return_value=10):

@@ -14,23 +14,14 @@ class GuessANumber(GuessGame):
     "Guess a Number game class."
     def __init__(self, number_to_guess, turns=10):
         "Initialize the game."
-        super().__init__("Guess a Number")
+        super().__init__("Guess a Number", turns=turns)
         self.__number_to_guess = number_to_guess
-        self.__turns = turns
     
     @property
     def number_to_guess(self):
         "Get number to guess."
         return self.__number_to_guess
 
-    @property
-    def turns(self):
-        "Get number of turns"
-        return self.__turns
-
-    @turns.setter
-    def turns(self, value):
-        self.__turns = value
 
     def input_int(self, message, error_msg='This is not a numeric value, try again!'):
         while True:

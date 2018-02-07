@@ -2,10 +2,9 @@ from guessgames.guessgame import GuessGame
 
 class GuessAWord(GuessGame):
     "Guess a word game class."
-    def __init__(self, word, tries=10):
-        super().__init__("Guess a Word")
+    def __init__(self, word, turns=10):
+        super().__init__("Guess a Word", turns=turns)
         self.word = word.upper()
-        self.tries = tries
         self.guesses = []
 
     def generate_word_to_display(self):
@@ -22,11 +21,11 @@ class GuessAWord(GuessGame):
             if set(self.guesses) == set(self.word):
                 return True
         else:
-            self.tries -= 1
-            print("Wrong! You have {} tries left, {} ...".format(self.tries, self.username))
+            self.turns -= 1
+            print("Wrong! You have {} turns left, {} ...".format(self.turns, self.username))
 
     def play(self):
-        while self.tries > 0:
+        while self.turns > 0:
             self.display_word()
             guess = input("\nGuess a character: ")
             guess = guess.upper()
@@ -35,7 +34,7 @@ class GuessAWord(GuessGame):
                 print("Congratulations {}!".format(self.username))
                 break
         else:
-            print("Tries number exceeded, sorry!")
+            print("turns number exceeded, sorry!")
         print("Game over")
 
 def main(word, turns):
