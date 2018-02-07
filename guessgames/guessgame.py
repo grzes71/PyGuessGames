@@ -52,16 +52,12 @@ class GuessGame:
         "Method for getting user name."
         return self._input("What is your name? ")
 
-    def set_user_name(self):
+    def _set_user_name(self):
         self.username = self._input_name()
 
-    def hello(self):
-        "Print game welcome message."
-        self._print(self.__class__.DEFAULT_WELCOME_MSG.format(self.username, self.gamename))
-
-    def welcome(self):
+    def _welcome(self):
         "Display welcome message."
-        self._print('Welcome to {} game'.format(self.gamename))
+        self._print(self.__class__.DEFAULT_WELCOME_MSG.format(self.username, self.gamename))
         
     def game_loop(self):
         "Main game loop."
@@ -69,12 +65,12 @@ class GuessGame:
 
     def play(self):
         "Play the game."
-        self.welcome()
-        self.set_user_name()
+        self._set_user_name()        
+        self._welcome()
         self.game_loop()
-        self.game_over()
+        self._game_over()
 
-    def game_over(self):
+    def _game_over(self):
         "Game over."
         self._print('Game over !')
 
