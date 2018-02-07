@@ -6,22 +6,22 @@
 .. moduleauthor:: FullName <email>
 """
 
-from contextlib import contextmanager
-from guessgames.guessgame import GuessGame
+from guessgames.guessgame import GuessGame, time_print
+
+GAME_NAME = "Guess a Number"
 
 
 class GuessANumber(GuessGame):
     "Guess a Number game class."
-    def __init__(self, number_to_guess, turns=10):
+    def __init__(self, number_to_guess, turns):
         "Initialize the game."
-        super().__init__("Guess a Number", turns=turns)
+        super().__init__(GAME_NAME, turns=turns)
         self.__number_to_guess = number_to_guess
     
     @property
     def number_to_guess(self):
         "Get number to guess."
         return self.__number_to_guess
-
 
     def input_int(self, message, error_msg='This is not a numeric value, try again!'):
         while True:
@@ -64,17 +64,11 @@ class GuessANumber(GuessGame):
         else:
             self._print("Tries number exceeded, sorry {}!".format(self.username))
 
-    def play(self):
-        "Play the game."
-        self.set_user_name()
-        self.game_loop()
-        self._print("Game over")
 
-
-def main(number, turns):
+def main(number, turns=10):
     game = GuessANumber(number, turns)
-    game.play()
-
+    with time_print(GAME_NAME):
+        game.play()
 
 if __name__ == '__main__':
     from random import randint

@@ -1,45 +1,71 @@
-from guessgames.guessgame import GuessGame
+"""
+.. module:: guessgames.guessanumber
+:platform: Unix, Windows
+:synopsis: Guess a NumbWorder simple game.
+
+.. moduleauthor:: FullName <email>
+"""
+
+from guessgames.guessgame import GuessGame, time_print
+
+GAME_NAME = "Guess a Word"
 
 class GuessAWord(GuessGame):
     "Guess a word game class."
-    def __init__(self, word, turns=10):
-        super().__init__("Guess a Word", turns=turns)
-        self.word = word.upper()
+    def __init__(self, word, turns):
+        super().__init__(GAME_NAME, turns=turns)
+        self.word_to_guess = word
         self.guesses = []
+    
+    @property
+    def word_to_guess(self):
+        return self._word_to_guess
 
-    def generate_word_to_display(self):
-        return ''.join(char.upper() if char in self.guesses else '*' for char in self.word)
+    @word_to_guess.setter
+    def word_to_guess(self, value):
+        self._word_to_guess = value.upper()
 
-    def display_word(self):
-        word = self.generate_word_to_display()
-        print("\n", word, '\n', '=' * len(self.word), sep='')
+    def generate_chars(self, guessed_chars):
+        for c in self.word_to_guess:
+            if c in guessed_chars:
+                yield c
+            else:
+                yield '_'
+        
+    def print_chars(self, guessed_chars):
+        for c in self.generate_chars(guessed_chars):
+            self._print(c, end='')
+        self._print()
 
-    def game_logic(self, guess):
-        if guess and len(guess)==1 and guess in self.word:
-            print("You've guessed it!")
-            self.guesses.append(guess)
-            if set(self.guesses) == set(self.word):
+    def game_logic(self, user_char, guessed_chars):
+        if user_char in guessed_chars:
+            self._print('Character already guessed!')
+        elif user_char in self.word_to_guess:
+            self._print('Good job!')
+            guessed_chars.add(user_char)
+            if guessed_chars == set(self.word_to_guess):
+                self._print('The word is "{}", congratulations {}'.format(self.word_to_guess, self.username))
                 return True
         else:
-            self.turns -= 1
-            print("Wrong! You have {} turns left, {} ...".format(self.turns, self.username))
+            print('Sorry!')
 
-    def play(self):
-        while self.turns > 0:
-            self.display_word()
-            guess = input("\nGuess a character: ")
-            guess = guess.upper()
-            if self.game_logic(guess):
-                self.display_word()
-                print("Congratulations {}!".format(self.username))
+    def game_loop(self):
+        guessed_chars = set()
+        while self.turns:
+            self.print_chars(guessed_chars)
+            user_char = input("Enter character: ").upper()
+            if self.game_logic(user_char, guessed_chars):
                 break
+            self.turns -= 1
         else:
-            print("turns number exceeded, sorry!")
-        print("Game over")
+            self._print('You did not guess the word: {}'.format(self.word_to_guess))
 
-def main(word, turns):
+
+def main(word, turns=10):
     game = GuessAWord(word, turns)
-    game.play()
+    with time_print(GAME_NAME):
+        game.play()
 
-if __name__ == '__main__':
-    main('secret', 10)
+if __name__ == '__main__':    
+    main('secret')
+

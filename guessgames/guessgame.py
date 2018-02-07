@@ -1,3 +1,6 @@
+import time
+from contextlib import contextmanager
+
 class GuessGame:
     "Abstract Game base class."
     DEFAULT_WELCOME_MSG = "Hello {}, time to play {} game!"
@@ -7,18 +10,14 @@ class GuessGame:
         self.turns = turns
         self.username = username
 
-    def hello(self):
-        "Print game welcome message"
-        print(self.__class__.DEFAULT_WELCOME_MSG.format(self.username, self.gamename))
-
     @staticmethod
     def _input(message):
         "Generic input method."
         return input(message)
 
     @staticmethod
-    def _print(message):
-        print(message)
+    def _print(message='', end='\n', sep=' '):
+        print(message, end=end, sep=sep)
 
     @property
     def turns(self):
@@ -56,5 +55,34 @@ class GuessGame:
     def set_user_name(self):
         self.username = self._input_name()
 
-    def play(self):
+    def hello(self):
+        "Print game welcome message."
+        self._print(self.__class__.DEFAULT_WELCOME_MSG.format(self.username, self.gamename))
+
+    def welcome(self):
+        "Display welcome message."
+        self._print('Welcome to {} game'.format(self.gamename))
+        
+    def game_loop(self):
+        "Main game loop."
         return NotImplemented
+
+    def play(self):
+        "Play the game."
+        self.welcome()
+        self.set_user_name()
+        self.game_loop()
+        self.game_over()
+
+    def game_over(self):
+        "Game over."
+        self._print('Game over !')
+
+
+@contextmanager
+def time_print(name):
+    t = time.time() 
+    try:
+        yield
+    finally:
+        print("The {} game took {} seconds".format(name, time.time()-t))

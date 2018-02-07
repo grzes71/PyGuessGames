@@ -1,43 +1,41 @@
-import argparse
-import random
+import argparse 
+import json
+from random import randint, choice
 
-from .guessanumber import main as guess_a_number_game
-from .guessaword import main as guess_a_word_game
+from guessgames.guessanumber import main as play_guessanumber
+from guessgames.guessaword import main as play_guessaword
 
-def game_number(args):
-    guess_a_number_game(args.number, args.tries)
-
-def game_word(args):
-    guess_a_word_game(args.word, args.tries)
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(description='Guessing games')
-    subparsers = parser.add_subparsers(title='games',
-                                       description='select game to play',
-                                       help='enter name of game to play')
-
-    number_p = subparsers.add_parser('guessanumber', help="Play 'Guess a Number' game")
-    number_p.add_argument("--number", type=int, help="number to guess", default=random.randint(0, 100))
-    number_p.add_argument('--tries', type=int, help='number of tries', default=10)
-    number_p.set_defaults(func=game_number)
-
-    word_p = subparsers.add_parser('guessaword', help="Play 'Guess a Word' game")
-    word_p.add_argument("word", help="word to guess")
-    word_p.add_argument('--tries', type=int, help='number of tries', default=10)
-    word_p.set_defaults(func=game_word)
-
-    parsed_args = parser.parse_args()
-
-    if hasattr(parsed_args, 'func'):
-        parsed_args.func(parsed_args)
+def game_guessaword(arg):
+    word = 'secret'
+    if arg.word:
+        word = arg.word
     else:
-        parser.print_help()
+        if arg.config:
+            with open(arg.config, 'r') as f:
+                json_obj = json.load(f)
+                word = choice(json_obj['words'])
+    play_guessaword(word, 10)
 
+def game_guessanumber(arg):
+    play_guessanumber(arg.number, 10)
 
 def main():
-    parse_args()
-    
+    par = argparse.ArgumentParser()
+    sub = par.add_subparsers(help='Select game')
+    pa1 = sub.add_parser('guessanumber', help='Guess a number')
+    pa2 = sub.add_parser('guessaword', help='Guess a word')
+    pa1.add_argument('--number', type=int, default=randint(0,100))
+    pa1.set_defaults(func=game_guessanumber)
+    pa2.set_defaults(func=game_guessaword)
+    group = pa2.add_mutually_exclusive_group()
+    group.add_argument('--config', help='path to config file')
+    group.add_argument('--word', help='word to guess')
+    arg = par.parse_args()
 
-if __name__=='__main__':
+    if hasattr(arg, 'func'):
+        arg.func(arg)
+    else:
+        par.print_help()
+
+if __name__ == '__main__':
     main()

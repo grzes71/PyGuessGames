@@ -16,7 +16,7 @@ class TestGuessAWord(TestCase):
         self.assertEqual(self.game.turns, 9)
 
     def test_number_to_guess(self):
-        self.assertEqual(self.game.word, 'SECRET')
+        self.assertEqual(self.game.word_to_guess, 'SECRET')
 
     def test_getgamename(self):
         self.assertEqual(self.game.gamename, 'Guess A Word')
