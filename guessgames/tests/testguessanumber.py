@@ -50,11 +50,12 @@ class TestGuessaNumber(TestCase):
                 self.assertEqual(self.game.turns, 9)
 
     def test_game_logic_success(self):
+        self.game.username = 'greg'
         with patch('builtins.input', return_value=50):
             with patch.object(self.game, '_print') as mock:
                 guess = self.game.game_logic(50)
                 self.assertTrue(guess)
-                mock.assert_called_with("You guessed it Unknown!")
+                mock.assert_called_with("You guessed it Greg!")
                 self.assertEqual(self.game.turns, 10)
 
     def test_play_game_loop_success(self):
