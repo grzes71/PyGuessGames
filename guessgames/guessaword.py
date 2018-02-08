@@ -3,7 +3,7 @@
 :platform: Unix, Windows
 :synopsis: Guess a NumbWorder simple game.
 
-.. moduleauthor:: FullName <email>
+.. moduleauthor:: Grzegorz Kotarski <gkotars@ra.rockwell.com>
 """
 
 from guessgames.guessgame import GuessGame, time_print
