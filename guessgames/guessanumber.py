@@ -76,15 +76,15 @@ class GuessANumber(GuessGame):
 
 
 def main(number, turns=10):
-        """Main game function.
+    """Main game function.
 
-        Creates and initializes the game objest, then run the game.
+    Creates and initializes the game objest, then run the game.
 
-        :param number: number to guess.
-        :type number: int
-        :param turns: number of turns (defaults to 10).
-        :type number: int
-        """
+    :param number: number to guess.
+    :type number: int
+    :param turns: number of turns (defaults to 10).
+    :type number: int
+    """
     game = GuessANumber(number, turns)
     with time_print(GAME_NAME):
         game.play()
