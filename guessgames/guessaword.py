@@ -19,13 +19,16 @@ class GuessAWord(GuessGame):
     
     @property
     def word_to_guess(self):
+        "get word to guess."
         return self._word_to_guess
 
     @word_to_guess.setter
     def word_to_guess(self, value):
+        "set word to guess."
         self._word_to_guess = value.upper()
 
     def generate_chars(self, guessed_chars):
+        "generator generating letters to print."
         for c in self.word_to_guess:
             if c in guessed_chars:
                 yield c
@@ -33,11 +36,13 @@ class GuessAWord(GuessGame):
                 yield '_'
         
     def print_chars(self, guessed_chars):
+        "print chars, including guessed ones."
         for c in self.generate_chars(guessed_chars):
             self._print(c, end='')
         self._print()
 
     def game_logic(self, user_char, guessed_chars):
+        "the game logic."
         if user_char in guessed_chars:
             self._print('Character already guessed!')
         elif user_char in self.word_to_guess:
