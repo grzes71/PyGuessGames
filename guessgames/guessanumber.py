@@ -3,7 +3,7 @@
 :platform: Unix, Windows
 :synopsis: Guess a Number simple game.
 
-.. moduleauthor:: FullName <email>
+.. moduleauthor:: Grzegorz Kotarski <gkotars@ra.rockwell.com>
 """
 
 from guessgames.guessgame import GuessGame, time_print
@@ -24,6 +24,15 @@ class GuessANumber(GuessGame):
         return self.__number_to_guess
 
     def input_int(self, message, error_msg='This is not a numeric value, try again!'):
+        """Get input from user until it can be casted to integer type.
+
+        :param message: message to be displayed (user prompt).
+        :type message: str
+        :param error_msg: message to be displayed in case of error.
+        :type error_msg: str        
+        :return: value provided by user
+        :rtype: int
+        """
         while True:
             try:
                 yield int(input(message))
@@ -31,6 +40,7 @@ class GuessANumber(GuessGame):
                 print(error_msg)
 
     def get_user_int(self, message):
+        "get user input casted to int type."
         return next(self.input_int(message)) 
 
     def game_logic(self, guess):
@@ -56,7 +66,7 @@ class GuessANumber(GuessGame):
         self.turns -= 1
 
     def game_loop(self):
-        "Main game loop."
+        "Main game loop, executing game's logic."
         while self.turns:
             guess = self.get_user_int("Enter an integer from 1 to 99: ")
             if self.game_logic(guess):
@@ -66,6 +76,15 @@ class GuessANumber(GuessGame):
 
 
 def main(number, turns=10):
+    """Main game function.
+
+    Creates and initializes the game objest, then run the game.
+
+    :param number: number to guess.
+    :type number: int
+    :param turns: number of turns (defaults to 10).
+    :type number: int
+    """
     game = GuessANumber(number, turns)
     with time_print(GAME_NAME):
         game.play()
